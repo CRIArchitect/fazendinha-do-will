@@ -191,19 +191,18 @@ img {
 ============================================================ */
 .character-stage {
   position: relative;
-  width: 460px;
-  height: 720px;
+  width: calc(460px * var(--char-scale));
+  height: calc(720px * var(--char-scale));
   transform-origin: center top;
-  transform: scale(var(--char-scale));
-  margin: calc(720px * (var(--char-scale) - 1) / 2) auto;
+  margin: 0 auto;
   flex-shrink: 0;
   animation: characterFloat 3s ease-in-out infinite;
   z-index: 5;
 }
 
 @keyframes characterFloat {
-  0%, 100% { transform: scale(var(--char-scale)) translateY(0); }
-  50% { transform: scale(var(--char-scale)) translateY(-12px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
 .character-shadow {
@@ -453,20 +452,20 @@ img {
 }
 
 /* CHARACTER COMPACTO (em fases) */
-.char-compact { --char-scale: 0.36; height: calc(720px * 0.36); }
-.char-tiny { --char-scale: 0.28; height: calc(720px * 0.28); }
-.char-big { --char-scale: 0.72; height: calc(720px * 0.72); }
+.char-compact { --char-scale: 0.36; }
+ .char-tiny { --char-scale: 0.28; }
+ .char-big { --char-scale: 0.72; }
 
-@media (max-width: 400px) {
-  :root { --char-scale: 0.55; }
-  .char-compact { --char-scale: 0.32; height: calc(720px * 0.32); }
-  .char-tiny { --char-scale: 0.25; height: calc(720px * 0.25); }
-  .char-big { --char-scale: 0.64; height: calc(720px * 0.64); }
-}
+ @media (max-width: 400px) {
+   :root { --char-scale: 0.55; }
+   .char-compact { --char-scale: 0.32; }
+   .char-tiny { --char-scale: 0.25; }
+   .char-big { --char-scale: 0.64; }
+ }
 
-@media (min-width: 480px) {
-  :root { --char-scale: 0.68; }
-  .char-big { --char-scale: 0.78; height: calc(720px * 0.78); }
+ @media (min-width: 480px) {
+   :root { --char-scale: 0.68; }
+   .char-big { --char-scale: 0.78; }
 }
 
 /* ============================================================
@@ -563,11 +562,12 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 0;
-}
-
-.phase-badge {
-  display: inline-flex;
+  padding: 4px 0 8px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(243, 223, 195, 0.92);
+  backdrop-filter: blur(6px);
   align-items: center;
   gap: 8px;
   background: var(--wood);

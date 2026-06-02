@@ -1,0 +1,2514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#2b2118">
+<title>Fazendinha do Will</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET + VARIÁVEIS
+============================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  /* Paleta Fazenda */
+  --cream: #fff2dc;
+  --cream-warm: #f3dfc3;
+  --cream-deep: #dfb982;
+  --cream-card: #fffaf0;
+  --wood: #2b2118;
+  --wood-mid: #4a3524;
+  --wood-soft: #6b4f38;
+  --green: #5a7a3a;
+  --green-light: #7ba05b;
+  --green-soft: #a8c285;
+  --red: #c1272d;
+  --red-dark: #8b1f23;
+  --red-soft: #e8a4a7;
+  --gold: #d4a017;
+  --gold-light: #f0c449;
+  --sky: #b8d4e8;
+
+  /* Personagem scale por contexto */
+  --char-scale: 0.62;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: radial-gradient(ellipse at top, var(--cream) 0%, var(--cream-warm) 55%, var(--cream-deep) 100%);
+  color: var(--wood);
+  -webkit-font-smoothing: antialiased;
+  overflow-y: auto;
+  position: relative;
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* ============================================================
+   PARTÍCULAS DE FUNDO
+============================================================ */
+.bg-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(212, 160, 23, 0.5);
+  border-radius: 50%;
+  animation: particleFloat 5s ease-in-out infinite;
+}
+.particle:nth-child(1) { left: 12%; top: 22%; animation-delay: 0s; }
+.particle:nth-child(2) { left: 82%; top: 28%; animation-delay: 1s; }
+.particle:nth-child(3) { left: 28%; top: 78%; animation-delay: 2s; }
+.particle:nth-child(4) { left: 72%; top: 82%; animation-delay: 3s; }
+.particle:nth-child(5) { left: 50%; top: 12%; animation-delay: 1.5s; }
+.particle:nth-child(6) { left: 18%; top: 55%; animation-delay: 2.5s; }
+.particle:nth-child(7) { left: 88%; top: 60%; animation-delay: 0.5s; }
+
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+  50% { transform: translateY(-35px) scale(1.4); opacity: 0.8; }
+}
+
+/* ============================================================
+   APP CONTAINER
+============================================================ */
+.app {
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 20px 16px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   TELAS - SISTEMA DE NAVEGAÇÃO
+============================================================ */
+.screen { display: none; flex-direction: column; gap: 16px; animation: screenIn 0.4s ease-out; }
+.screen.active { display: flex; }
+
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   TÍTULO PRINCIPAL
+============================================================ */
+.brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.diamond {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--red);
+  transform: rotate(45deg);
+}
+
+.brand-line {
+  font-family: 'Inter', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--wood-soft);
+  text-transform: uppercase;
+}
+
+.title-stack { text-align: center; }
+
+.title-main {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: clamp(38px, 11vw, 52px);
+  line-height: 0.95;
+  color: var(--wood);
+  letter-spacing: -0.02em;
+}
+
+.title-main em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.title-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  color: var(--wood-soft);
+  text-transform: uppercase;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.title-tagline {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--wood-mid);
+  margin-top: 12px;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   PERSONAGEM WILL
+============================================================ */
+.character-stage {
+  position: relative;
+  width: 460px;
+  height: 720px;
+  transform-origin: center top;
+  transform: scale(var(--char-scale));
+  margin: calc(720px * (var(--char-scale) - 1) / 2) auto;
+  flex-shrink: 0;
+  animation: characterFloat 3s ease-in-out infinite;
+  z-index: 5;
+}
+
+@keyframes characterFloat {
+  0%, 100% { transform: scale(var(--char-scale)) translateY(0); }
+  50% { transform: scale(var(--char-scale)) translateY(-12px); }
+}
+
+.character-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  width: 230px;
+  height: 34px;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  filter: blur(10px);
+  animation: shadowPulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes shadowPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.22; }
+  50% { transform: translateX(-50%) scale(0.82); opacity: 0.12; }
+}
+
+.character {
+  position: absolute;
+  inset: 0;
+  transform-origin: center bottom;
+  animation: bodyIdle 2.8s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes bodyIdle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(0.4deg) scale(1.01); }
+}
+
+.part {
+  position: absolute;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.12));
+}
+
+.legs {
+  width: 235px;
+  left: 112px;
+  top: 345px;
+  z-index: 2;
+  animation: legsIdle 2.8s ease-in-out infinite;
+}
+
+.shoes {
+  width: 270px;
+  left: 88px;
+  top: 590px;
+  z-index: 3;
+}
+
+.body {
+  width: 280px;
+  left: 88px;
+  top: 218px;
+  z-index: 5;
+  transform-origin: center bottom;
+  animation: breathing 2.8s ease-in-out infinite;
+}
+
+.head {
+  width: 170px;
+  left: 143px;
+  top: 86px;
+  z-index: 9;
+  transform-origin: center bottom;
+  animation: headIdle 2.5s ease-in-out infinite;
+}
+
+.arm-left {
+  width: 178px;
+  left: 17px;
+  top: 145px;
+  z-index: 8;
+  transform-origin: 72% 86%;
+}
+
+.arm-right {
+  width: 148px;
+  left: 288px;
+  top: 250px;
+  z-index: 7;
+  transform-origin: 15% 15%;
+}
+
+@keyframes breathing {
+  0%, 100% { transform: scaleY(1) scaleX(1); }
+  50% { transform: scaleY(1.012) scaleX(1.006); }
+}
+
+@keyframes headIdle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  40% { transform: translateY(-3px) rotate(-2deg); }
+  75% { transform: translateY(1px) rotate(1.5deg); }
+}
+
+@keyframes legsIdle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2px); }
+}
+
+/* ESTADOS DO PERSONAGEM */
+.state-idle .arm-left { animation: waveArm 1.15s ease-in-out infinite; }
+@keyframes waveArm {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-13deg); }
+  40% { transform: rotate(10deg); }
+  60% { transform: rotate(-10deg); }
+  80% { transform: rotate(7deg); }
+}
+
+.state-ok .arm-left {
+  width: 190px;
+  left: 8px;
+  top: 135px;
+  animation: okPop 1s ease-in-out infinite;
+}
+@keyframes okPop {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  40% { transform: rotate(-5deg) scale(1.08); }
+  70% { transform: rotate(3deg) scale(1.02); }
+}
+
+.state-erro .arm-left {
+  width: 210px;
+  left: -5px;
+  top: 155px;
+  animation: erroShake 0.7s ease-in-out infinite;
+}
+.state-erro .head { animation: headSad 1.8s ease-in-out infinite; }
+
+@keyframes erroShake {
+  0%, 100% { transform: rotate(0deg) translateX(0); }
+  25% { transform: rotate(-2deg) translateX(-3px); }
+  50% { transform: rotate(2deg) translateX(3px); }
+  75% { transform: rotate(-1deg) translateX(-2px); }
+}
+
+@keyframes headSad {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(-4deg) translateY(3px); }
+}
+
+.state-parabens .arm-left {
+  width: 230px;
+  left: -8px;
+  top: 120px;
+  animation: trophyLift 1.4s ease-in-out infinite;
+  z-index: 12;
+}
+
+.state-parabens .arm-right {
+  width: 180px;
+  left: 295px;
+  top: 140px;
+  animation: fistPump 0.95s ease-in-out infinite;
+  z-index: 11;
+}
+
+.state-parabens .head { animation: headVictory 1.6s ease-in-out infinite; }
+
+@keyframes trophyLift {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(-3deg); }
+}
+
+@keyframes fistPump {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(4deg); }
+}
+
+@keyframes headVictory {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  50% { transform: translateY(-4px) rotate(2deg) scale(1.03); }
+}
+
+/* EFEITOS */
+.effect {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transform: scale(0.4);
+  z-index: 20;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.14));
+}
+
+.ok-check { width: 110px; right: 20px; top: 170px; }
+.ok-stars { width: 170px; left: -55px; top: 60px; }
+.error-x { width: 115px; right: 20px; top: 170px; }
+.error-burst { width: 180px; left: -60px; top: 70px; }
+
+.confetti-1 {
+  width: 520px;
+  left: 50%;
+  top: 40px;
+  transform: translateX(-50%) scale(0.5);
+  z-index: 0;
+}
+.confetti-2 {
+  width: 560px;
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%) scale(0.5);
+  z-index: 0;
+}
+.gold-shine {
+  width: 420px;
+  left: 50%;
+  top: 40px;
+  transform: translateX(-50%) scale(0.5);
+  z-index: 10;
+}
+
+.state-ok .ok-check,
+.state-ok .ok-stars { animation: effectPop 1.2s ease-in-out infinite; }
+
+.state-erro .error-x,
+.state-erro .error-burst { animation: effectPop 0.9s ease-in-out infinite; }
+
+.state-parabens .confetti-1 { animation: confettiFall 4s linear infinite; opacity: 1; }
+.state-parabens .confetti-2 { animation: confettiFall 5s linear infinite; opacity: 1; }
+.state-parabens .gold-shine { animation: shinePulse 1.5s ease-in-out infinite; }
+
+@keyframes effectPop {
+  0% { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+  30% { opacity: 1; transform: scale(1.12) rotate(3deg); }
+  60% { opacity: 1; transform: scale(1) rotate(0deg); }
+  100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+}
+
+@keyframes confettiFall {
+  0% { transform: translateX(-50%) translateY(-80px) scale(0.5); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateX(-50%) translateY(260px) scale(0.5); opacity: 0; }
+}
+
+@keyframes shinePulse {
+  0%, 100% { opacity: 0.25; transform: translateX(-50%) scale(0.5); }
+  50% { opacity: 1; transform: translateX(-50%) scale(0.62); }
+}
+
+/* CHARACTER COMPACTO (em fases) */
+.char-compact { --char-scale: 0.36; height: calc(720px * 0.36); }
+.char-tiny { --char-scale: 0.28; height: calc(720px * 0.28); }
+.char-big { --char-scale: 0.72; height: calc(720px * 0.72); }
+
+@media (max-width: 400px) {
+  :root { --char-scale: 0.55; }
+  .char-compact { --char-scale: 0.32; height: calc(720px * 0.32); }
+  .char-tiny { --char-scale: 0.25; height: calc(720px * 0.25); }
+  .char-big { --char-scale: 0.64; height: calc(720px * 0.64); }
+}
+
+@media (min-width: 480px) {
+  :root { --char-scale: 0.68; }
+  .char-big { --char-scale: 0.78; height: calc(720px * 0.78); }
+}
+
+/* ============================================================
+   BOTÕES
+============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 24px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  min-height: 52px;
+  user-select: none;
+}
+
+.btn:active { transform: scale(0.96); }
+
+.btn-primary {
+  background: var(--wood);
+  color: var(--cream);
+  box-shadow: 0 4px 0 var(--wood-mid), 0 8px 16px rgba(43, 33, 24, 0.25);
+}
+.btn-primary:active { box-shadow: 0 2px 0 var(--wood-mid), 0 4px 8px rgba(43, 33, 24, 0.2); }
+
+.btn-red {
+  background: var(--red);
+  color: var(--cream);
+  box-shadow: 0 4px 0 var(--red-dark), 0 8px 16px rgba(193, 39, 45, 0.3);
+}
+.btn-red:active { box-shadow: 0 2px 0 var(--red-dark); }
+
+.btn-green {
+  background: var(--green);
+  color: var(--cream);
+  box-shadow: 0 4px 0 #3d5527, 0 8px 16px rgba(90, 122, 58, 0.25);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--wood-mid);
+  border: 1.5px solid var(--wood-soft);
+}
+
+.btn-block { width: 100%; }
+.btn-sm { padding: 10px 16px; font-size: 13px; min-height: 40px; border-radius: 10px; }
+
+/* ============================================================
+   CARDS / PAINÉIS
+============================================================ */
+.card {
+  background: var(--cream-card);
+  border-radius: 18px;
+  padding: 18px;
+  border: 1.5px solid rgba(107, 79, 56, 0.18);
+  box-shadow: 0 2px 0 rgba(107, 79, 56, 0.06), 0 8px 20px rgba(43, 33, 24, 0.06);
+}
+
+.card-wood {
+  background: var(--wood);
+  color: var(--cream);
+  border-color: var(--wood-mid);
+}
+
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--wood);
+}
+
+.card-sub {
+  font-size: 12px;
+  color: var(--wood-soft);
+  margin-top: 4px;
+}
+
+/* ============================================================
+   HEADER DE FASE
+============================================================ */
+.phase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.phase-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--wood);
+  color: var(--cream);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: 'Inter', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.phase-title-block { margin: 8px 0 4px; }
+
+.phase-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.phase-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.1;
+  color: var(--wood);
+  margin-top: 4px;
+}
+
+.phase-brief {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--wood-mid);
+  margin-top: 8px;
+}
+
+/* ============================================================
+   LISTA DE FASES (MENU)
+============================================================ */
+.phase-list { display: flex; flex-direction: column; gap: 10px; }
+
+.phase-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--cream-card);
+  border-radius: 16px;
+  border: 1.5px solid rgba(107, 79, 56, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  min-height: 64px;
+}
+
+.phase-item:active { transform: scale(0.98); }
+.phase-item.done { border-color: var(--green); background: linear-gradient(to right, var(--cream-card), rgba(123, 160, 91, 0.08)); }
+
+.phase-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--wood);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.phase-item.done .phase-num { background: var(--green); }
+
+.phase-info { flex: 1; min-width: 0; }
+.phase-info-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px; color: var(--wood); line-height: 1.2; }
+.phase-info-sub { font-size: 11px; color: var(--wood-soft); margin-top: 2px; }
+.phase-arrow { font-size: 18px; color: var(--wood-soft); }
+.phase-item.done .phase-arrow { color: var(--green); }
+
+/* ============================================================
+   PROGRESS BAR
+============================================================ */
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.progress-label {
+  font-family: 'Inter', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--wood-soft);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(107, 79, 56, 0.18);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--red), var(--gold));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* ============================================================
+   FASE 01 - ARRANJO FÍSICO (sortable)
+============================================================ */
+.flow-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.station-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--cream-card);
+  border-radius: 14px;
+  border: 2px solid;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.station-card.ok { border-color: var(--green); background: rgba(123, 160, 91, 0.08); }
+.station-card.wrong { border-color: var(--red-soft); background: rgba(193, 39, 45, 0.05); }
+
+.station-pos {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--wood);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.station-info { flex: 1; min-width: 0; }
+.station-name { font-family: 'Fraunces', serif; font-weight: 700; font-size: 15px; color: var(--wood); }
+.station-emoji { font-size: 22px; }
+
+.station-controls { display: flex; flex-direction: column; gap: 4px; }
+.station-controls button {
+  width: 32px;
+  height: 24px;
+  background: var(--wood);
+  color: var(--cream);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.station-controls button:disabled { background: rgba(107, 79, 56, 0.2); color: var(--wood-soft); }
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--wood);
+  color: var(--cream);
+  border-radius: 14px;
+}
+
+.metric-label { font-family: 'Inter', monospace; font-size: 11px; letter-spacing: 0.15em; opacity: 0.8; }
+.metric-value { font-family: 'Fraunces', serif; font-weight: 800; font-size: 24px; }
+.metric-value.green { color: var(--gold-light); }
+.metric-value.red { color: var(--red-soft); }
+
+/* ============================================================
+   FASE 02 - CAPACIDADE
+============================================================ */
+.demand-chart {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 16px 12px;
+  border: 1.5px solid rgba(107, 79, 56, 0.15);
+}
+
+.chart-label {
+  font-family: 'Inter', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--wood-soft);
+  margin-bottom: 10px;
+}
+
+.chart-svg { width: 100%; height: 140px; display: block; }
+
+.policy-list { display: flex; flex-direction: column; gap: 10px; }
+
+.policy-card {
+  padding: 14px 16px;
+  background: var(--cream-card);
+  border-radius: 14px;
+  border: 2px solid rgba(107, 79, 56, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.policy-card:active { transform: scale(0.98); }
+.policy-card.selected { border-color: var(--red); background: rgba(193, 39, 45, 0.04); }
+
+.policy-name { font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px; color: var(--wood); }
+.policy-desc { font-size: 12px; color: var(--wood-soft); margin-top: 4px; line-height: 1.4; }
+
+.cost-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cost-tile {
+  background: var(--cream-card);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1.5px solid rgba(107, 79, 56, 0.15);
+}
+
+.cost-tile.total {
+  grid-column: span 2;
+  background: var(--wood);
+  color: var(--cream);
+}
+
+.cost-tile-label { font-size: 10px; letter-spacing: 0.1em; opacity: 0.7; text-transform: uppercase; font-weight: 600; }
+.cost-tile-value { font-family: 'Inter', monospace; font-weight: 800; font-size: 18px; margin-top: 4px; }
+.cost-tile.total .cost-tile-value { font-size: 24px; color: var(--gold-light); }
+
+/* ============================================================
+   FASE 03 - TIPOS DE PROCESSO
+============================================================ */
+.match-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.match-group-title {
+  font-family: 'Inter', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+}
+
+.product-list { display: flex; flex-direction: column; gap: 8px; }
+
+.product-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--cream-card);
+  border-radius: 12px;
+  border: 2px solid rgba(107, 79, 56, 0.15);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.product-item.selected { border-color: var(--red); background: rgba(193, 39, 45, 0.05); }
+.product-item.matched-correct { border-color: var(--green); background: rgba(123, 160, 91, 0.08); }
+.product-item.matched-wrong { border-color: var(--red-soft); background: rgba(193, 39, 45, 0.04); }
+
+.product-emoji { font-size: 24px; flex-shrink: 0; }
+.product-info { flex: 1; min-width: 0; }
+.product-name { font-family: 'Fraunces', serif; font-weight: 700; font-size: 14px; color: var(--wood); line-height: 1.2; }
+.product-match { font-size: 10px; color: var(--wood-soft); margin-top: 2px; font-style: italic; }
+
+.types-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.type-chip {
+  padding: 10px 8px;
+  background: var(--cream-card);
+  border-radius: 10px;
+  border: 2px solid rgba(107, 79, 56, 0.15);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.type-chip:active { transform: scale(0.96); }
+.type-chip.disabled { opacity: 0.4; cursor: not-allowed; }
+
+.type-chip-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--wood);
+}
+
+.type-chip-sub {
+  font-size: 10px;
+  color: var(--wood-soft);
+  margin-top: 2px;
+}
+
+/* ============================================================
+   FASE 04 - PROJETO DE PRODUTO
+============================================================ */
+.stage-progress {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin: 4px 0;
+}
+
+.stage-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(107, 79, 56, 0.25);
+  transition: background 0.3s ease;
+}
+
+.stage-dot.done { background: var(--green); }
+.stage-dot.current { background: var(--red); width: 24px; border-radius: 4px; }
+
+.question-block {
+  background: var(--cream-card);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1.5px solid rgba(107, 79, 56, 0.15);
+}
+
+.question-stage {
+  font-family: 'Inter', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.question-text {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--wood);
+  margin-top: 8px;
+}
+
+.option-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+
+.option-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--cream);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.option-item:active { transform: scale(0.98); }
+.option-item.correct { border-color: var(--green); background: rgba(123, 160, 91, 0.1); }
+.option-item.wrong { border-color: var(--red); background: rgba(193, 39, 45, 0.05); }
+.option-item.disabled { pointer-events: none; opacity: 0.6; }
+
+.option-letter {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--wood);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', monospace;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.option-item.correct .option-letter { background: var(--green); }
+.option-item.wrong .option-letter { background: var(--red); }
+
+.option-text {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--wood);
+  font-weight: 500;
+  flex: 1;
+}
+
+.explain-box {
+  background: var(--cream-warm);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 12px;
+  border-left: 4px solid var(--gold);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--wood-mid);
+}
+
+/* ============================================================
+   FASE 05 - LOCALIZAÇÃO
+============================================================ */
+.criteria-list { display: flex; flex-direction: column; gap: 10px; }
+
+.criteria-row {
+  background: var(--cream-card);
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1.5px solid rgba(107, 79, 56, 0.15);
+}
+
+.criteria-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.criteria-name { font-family: 'Fraunces', serif; font-weight: 700; font-size: 13px; color: var(--wood); }
+.criteria-weight {
+  font-family: 'Inter', monospace;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--red);
+  background: rgba(193, 39, 45, 0.08);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.criteria-pills {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.weight-pill {
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(107, 79, 56, 0.1);
+  color: var(--wood-mid);
+  font-family: 'Inter', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.weight-pill.active { background: var(--red); color: var(--cream); }
+.weight-pill:active { transform: scale(0.95); }
+
+.location-card {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 14px;
+  border: 2px solid rgba(107, 79, 56, 0.15);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.location-card.best { border-color: var(--green); background: linear-gradient(to right, var(--cream-card), rgba(123, 160, 91, 0.08)); }
+.location-card:active { transform: scale(0.98); }
+
+.location-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.location-name { font-family: 'Fraunces', serif; font-weight: 800; font-size: 16px; color: var(--wood); line-height: 1.2; }
+.location-desc { font-size: 11px; color: var(--wood-soft); margin-top: 4px; line-height: 1.4; }
+
+.location-score {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--wood);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.location-card.best .location-score { color: var(--green); }
+
+.location-badge {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: 'Inter', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--green);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   FEEDBACK MODAL (Will reagindo)
+============================================================ */
+.feedback-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 33, 24, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease;
+}
+
+.feedback-overlay.active { display: flex; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.feedback-msg {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--cream);
+  text-align: center;
+  margin-top: -40px;
+  padding: 0 24px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.feedback-msg.ok { color: var(--gold-light); }
+.feedback-msg.erro { color: var(--red-soft); }
+
+/* ============================================================
+   RELATÓRIO FINAL
+============================================================ */
+.report-score-block {
+  background: var(--wood);
+  color: var(--cream);
+  border-radius: 18px;
+  padding: 20px;
+  text-align: center;
+}
+
+.score-eyebrow {
+  font-family: 'Inter', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  opacity: 0.7;
+  font-weight: 700;
+}
+
+.score-big {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--gold-light);
+  margin-top: 6px;
+}
+
+.score-of { font-family: 'Inter', monospace; font-size: 16px; opacity: 0.6; margin-left: 4px; }
+.score-grade {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: 48px;
+  margin-top: 8px;
+}
+
+.report-phase-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--cream-card);
+  border-radius: 12px;
+  border: 1px solid rgba(107, 79, 56, 0.12);
+}
+
+.report-phase-num {
+  font-family: 'Inter', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--wood-soft);
+  width: 22px;
+}
+
+.report-phase-name { flex: 1; font-family: 'Fraunces', serif; font-weight: 700; font-size: 13px; color: var(--wood); }
+
+.report-phase-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(107, 79, 56, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  max-width: 100px;
+}
+
+.report-phase-bar-fill {
+  height: 100%;
+  background: var(--red);
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+.report-phase-bar-fill.good { background: var(--green); }
+.report-phase-bar-fill.ok { background: var(--gold); }
+
+.report-phase-pts {
+  font-family: 'Inter', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--wood);
+  width: 32px;
+  text-align: right;
+}
+
+.concept-tag {
+  display: inline-block;
+  background: rgba(193, 39, 45, 0.08);
+  color: var(--red-dark);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  margin: 2px 2px 0 0;
+  border: 1px solid rgba(193, 39, 45, 0.15);
+}
+
+/* ============================================================
+   UTILS
+============================================================ */
+.row { display: flex; gap: 8px; }
+.row > * { flex: 1; }
+.mt-4 { margin-top: 4px; }
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.center { text-align: center; }
+.divider {
+  height: 1px;
+  background: rgba(107, 79, 56, 0.15);
+  margin: 8px 0;
+}
+
+.section-label {
+  font-family: 'Inter', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  text-transform: uppercase;
+  margin: 4px 0;
+}
+
+/* Loading do personagem caso assets falhem */
+.character img:not([src]),
+.character img[src=""] {
+  visibility: hidden;
+}
+
+/* Footer brand */
+.brand-footer {
+  text-align: center;
+  margin-top: 16px;
+  padding-top: 12px;
+}
+
+.brand-footer-text {
+  font-family: 'Inter', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--wood-soft);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Partículas de fundo -->
+<div class="bg-particles">
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+</div>
+
+<div class="app">
+
+  <!-- ============================================================
+       TELA: MENU PRINCIPAL
+  ============================================================ -->
+  <section class="screen active" id="screen-menu">
+
+    <div class="brand-mark">
+      <span class="diamond"></span>
+      <span class="brand-line">Estudos / Adm Produção</span>
+      <span class="diamond"></span>
+    </div>
+
+    <div class="title-stack">
+      <h1 class="title-main">Fazendinha <em>do Will</em></h1>
+      <div class="title-sub">5 Fases · 1 Operação · 1 Diploma</div>
+      <p class="title-tagline">"Bora pra fazenda, gestor!<br>Resolva os 5 problemas da Delícias do Campo."</p>
+    </div>
+
+    <!-- Will animado grande na capa -->
+    <div class="character-stage char-big state-idle" id="char-menu">
+      <div class="character-shadow"></div>
+      <img class="effect ok-check" src="./assets/personagem/ok/selo-check-verde.png" alt="">
+      <img class="effect ok-stars" src="./assets/personagem/ok/explosao-estrelas.png" alt="">
+      <img class="effect error-x" src="./assets/personagem/erro/icone-x-vermelho.png" alt="">
+      <img class="effect error-burst" src="./assets/personagem/erro/efeito-erro-explosao.png" alt="">
+      <img class="effect confetti-1" src="./assets/personagem/parabens/confete-1.png" alt="">
+      <img class="effect confetti-2" src="./assets/personagem/parabens/confete-2.png" alt="">
+      <img class="effect gold-shine" src="./assets/personagem/parabens/brilho-dourado.png" alt="">
+      <div class="character">
+        <img class="part legs" src="./assets/personagem/base/pernas-jeans.png" alt="">
+        <img class="part shoes" src="./assets/personagem/base/tenis.png" alt="">
+        <img class="part body" src="./assets/personagem/base/tronco-camisa.png" alt="">
+        <img class="part arm-right" src="./assets/personagem/base/braco-bolso.png" alt="" data-arm="right">
+        <img class="part arm-left" src="./assets/personagem/base/braco-acenando.png" alt="" data-arm="left">
+        <img class="part head" src="./assets/personagem/base/cabeca-base.png" alt="">
+      </div>
+    </div>
+
+    <div class="progress-row">
+      <span class="progress-label">Progresso</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
+      <span class="progress-label" id="progress-text">0/5</span>
+    </div>
+
+    <div class="section-label center mt-8">Selecione uma fase</div>
+
+    <div class="phase-list" id="phase-list"></div>
+
+    <button class="btn btn-red btn-block" id="btn-final" style="display:none">
+      Ver relatório final 🏆
+    </button>
+
+    <button class="btn btn-ghost btn-sm" id="btn-reset" style="align-self:center">
+      reiniciar progresso
+    </button>
+
+    <div class="brand-footer">
+      <div class="brand-footer-text">CRÏA ◇ Carlos Bassi ◇ 2026</div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       TELA: FASE 01 - ARRANJO FÍSICO
+  ============================================================ -->
+  <section class="screen" id="screen-p1">
+    <div class="phase-header">
+      <button class="btn btn-ghost btn-sm" onclick="goMenu()">← menu</button>
+      <span class="phase-badge">Fase 01 / 05</span>
+    </div>
+
+    <div class="character-stage char-tiny state-idle" id="char-p1" style="align-self:center">
+      <div class="character-shadow"></div>
+      <img class="effect ok-check" src="./assets/personagem/ok/selo-check-verde.png" alt="">
+      <img class="effect ok-stars" src="./assets/personagem/ok/explosao-estrelas.png" alt="">
+      <img class="effect error-x" src="./assets/personagem/erro/icone-x-vermelho.png" alt="">
+      <img class="effect error-burst" src="./assets/personagem/erro/efeito-erro-explosao.png" alt="">
+      <div class="character">
+        <img class="part legs" src="./assets/personagem/base/pernas-jeans.png" alt="">
+        <img class="part shoes" src="./assets/personagem/base/tenis.png" alt="">
+        <img class="part body" src="./assets/personagem/base/tronco-camisa.png" alt="">
+        <img class="part arm-right" src="./assets/personagem/base/braco-bolso.png" alt="" data-arm="right">
+        <img class="part arm-left" src="./assets/personagem/base/braco-acenando.png" alt="" data-arm="left">
+        <img class="part head" src="./assets/personagem/base/cabeca-base.png" alt="">
+      </div>
+    </div>
+
+    <div class="phase-title-block">
+      <div class="phase-eyebrow">Arranjo Físico</div>
+      <h2 class="phase-title">Organize o fluxo da fábrica</h2>
+      <p class="phase-brief">O galpão da Delícias do Campo tem muita movimentação entre etapas. Coloque as 5 estações na ordem correta do fluxo de produção usando os botões ↑↓.</p>
+    </div>
+
+    <div class="flow-chart" id="flow-chart"></div>
+
+    <div class="metric-row">
+      <div>
+        <div class="metric-label">Movimentação</div>
+        <div class="metric-value" id="flow-distance">—</div>
+      </div>
+      <div style="text-align:right">
+        <div class="metric-label">Tipo de arranjo</div>
+        <div style="font-family:'Fraunces',serif;font-weight:700;font-size:13px;margin-top:2px" id="flow-layout">—</div>
+      </div>
+    </div>
+
+    <div class="card" style="font-size:12px;line-height:1.5;color:var(--wood-mid)">
+      <strong style="color:var(--wood);font-family:'Fraunces',serif;font-size:14px">Conceito:</strong><br>
+      <strong>Arranjo por produto</strong> = recursos na sequência do fluxo (alto vol, baixa var). <strong>Funcional</strong> = agrupa por função (hospitais). <strong>Posicional</strong> = produto parado (canteiro). <strong>Celular</strong> = células que reúnem recursos.
+    </div>
+
+    <button class="btn btn-red btn-block" id="btn-p1-finish">Concluir fase ✓</button>
+  </section>
+
+  <!-- ============================================================
+       TELA: FASE 02 - CAPACIDADE
+  ============================================================ -->
+  <section class="screen" id="screen-p2">
+    <div class="phase-header">
+      <button class="btn btn-ghost btn-sm" onclick="goMenu()">← menu</button>
+      <span class="phase-badge">Fase 02 / 05</span>
+    </div>
+
+    <div class="character-stage char-tiny state-idle" id="char-p2" style="align-self:center">
+      <div class="character-shadow"></div>
+      <img class="effect ok-check" src="./assets/personagem/ok/selo-check-verde.png" alt="">
+      <img class="effect ok-stars" src="./assets/personagem/ok/explosao-estrelas.png" alt="">
+      <img class="effect error-x" src="./assets/personagem/erro/icone-x-vermelho.png" alt="">
+      <img class="effect error-burst" src="./assets/personagem/erro/efeito-erro-explosao.png" alt="">
+      <div class="character">
+        <img class="part legs" src="./assets/personagem/base/pernas-jeans.png" alt="">
+        <img class="part shoes" src="./assets/personagem/base/tenis.png" alt="">
+        <img class="part body" src="./assets/personagem/base/tronco-camisa.png" alt="">
+        <img class="part arm-right" src="./assets/personagem/base/braco-bolso.png" alt="" data-arm="right">
+        <img class="part arm-left" src="./assets/personagem/base/braco-acenando.png" alt="" data-arm="left">
+        <img class="part head" src="./assets/personagem/base/cabeca-base.png" alt="">
+      </div>
+    </div>
+
+    <div class="phase-title-block">
+      <div class="phase-eyebrow">Capacidade Produtiva</div>
+      <h2 class="phase-title">Atenda o pico de demanda</h2>
+      <p class="phase-brief">Os doces têm forte sazonalidade (festas de junho, fim de ano). Escolha a política de capacidade que melhor equilibra custo e atendimento.</p>
+    </div>
+
+    <div class="demand-chart">
+      <div class="chart-label">Demanda mensal (un/mês)</div>
+      <svg class="chart-svg" id="chart-svg" viewBox="0 0 360 140" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div class="section-label">Escolha a política</div>
+
+    <div class="policy-list" id="policy-list"></div>
+
+    <div class="cost-grid" id="cost-grid" style="display:none">
+      <div class="cost-tile">
+        <div class="cost-tile-label">Estoque</div>
+        <div class="cost-tile-value" id="cost-stock">—</div>
+      </div>
+      <div class="cost-tile">
+        <div class="cost-tile-label">Ociosidade</div>
+        <div class="cost-tile-value" id="cost-idle">—</div>
+      </div>
+      <div class="cost-tile">
+        <div class="cost-tile-label">Perda por falta</div>
+        <div class="cost-tile-value" id="cost-loss">—</div>
+      </div>
+      <div class="cost-tile">
+        <div class="cost-tile-label">Custo M.O.</div>
+        <div class="cost-tile-value" id="cost-mo">—</div>
+      </div>
+      <div class="cost-tile total">
+        <div class="cost-tile-label">Custo total</div>
+        <div class="cost-tile-value" id="cost-total">R$ 0</div>
+      </div>
+    </div>
+
+    <button class="btn btn-red btn-block" id="btn-p2-finish">Concluir fase ✓</button>
+  </section>
+
+  <!-- ============================================================
+       TELA: FASE 03 - TIPOS DE PROCESSO
+  ============================================================ -->
+  <section class="screen" id="screen-p3">
+    <div class="phase-header">
+      <button class="btn btn-ghost btn-sm" onclick="goMenu()">← menu</button>
+      <span class="phase-badge">Fase 03 / 05</span>
+    </div>
+
+    <div class="character-stage char-tiny state-idle" id="char-p3" style="align-self:center">
+      <div class="character-shadow"></div>
+      <img class="effect ok-check" src="./assets/personagem/ok/selo-check-verde.png" alt="">
+      <img class="effect ok-stars" src="./assets/personagem/ok/explosao-estrelas.png" alt="">
+      <img class="effect error-x" src="./assets/personagem/erro/icone-x-vermelho.png" alt="">
+      <img class="effect error-burst" src="./assets/personagem/erro/efeito-erro-explosao.png" alt="">
+      <div class="character">
+        <img class="part legs" src="./assets/personagem/base/pernas-jeans.png" alt="">
+        <img class="part shoes" src="./assets/personagem/base/tenis.png" alt="">
+        <img class="part body" src="./assets/personagem/base/tronco-camisa.png" alt="">
+        <img class="part arm-right" src="./assets/personagem/base/braco-bolso.png" alt="" data-arm="right">
+        <img class="part arm-left" src="./assets/personagem/base/braco-acenando.png" alt="" data-arm="left">
+        <img class="part head" src="./assets/personagem/base/cabeca-base.png" alt="">
+      </div>
+    </div>
+
+    <div class="phase-title-block">
+      <div class="phase-eyebrow">Tipos de Processo</div>
+      <h2 class="phase-title">Volume × Variedade</h2>
+      <p class="phase-brief">Toque em um produto e depois no tipo de processo correto. Use a matriz volume-variedade como guia: mais variedade pede flexibilidade, mais volume pede padronização.</p>
+    </div>
+
+    <div class="match-section">
+      <div>
+        <div class="match-group-title">Produtos da Delícias</div>
+        <div class="product-list mt-8" id="product-list"></div>
+      </div>
+
+      <div>
+        <div class="match-group-title">Tipos de processo</div>
+        <div class="types-grid mt-8" id="types-grid"></div>
+      </div>
+    </div>
+
+    <div class="metric-row">
+      <div>
+        <div class="metric-label">Corretos</div>
+        <div class="metric-value" id="p3-correct">0 / 5</div>
+      </div>
+      <div style="text-align:right">
+        <div class="metric-label">Placados</div>
+        <div class="metric-value" id="p3-placed">0 / 5</div>
+      </div>
+    </div>
+
+    <button class="btn btn-red btn-block" id="btn-p3-finish">Concluir fase ✓</button>
+  </section>
+
+  <!-- ============================================================
+       TELA: FASE 04 - NOVO PRODUTO
+  ============================================================ -->
+  <section class="screen" id="screen-p4">
+    <div class="phase-header">
+      <button class="btn btn-ghost btn-sm" onclick="goMenu()">← menu</button>
+      <span class="phase-badge">Fase 04 / 05</span>
+    </div>
+
+    <div class="character-stage char-tiny state-idle" id="char-p4" style="align-self:center">
+      <div class="character-shadow"></div>
+      <img class="effect ok-check" src="./assets/personagem/ok/selo-check-verde.png" alt="">
+      <img class="effect ok-stars" src="./assets/personagem/ok/explosao-estrelas.png" alt="">
+      <img class="effect error-x" src="./assets/personagem/erro/icone-x-vermelho.png" alt="">
+      <img class="effect error-burst" src="./assets/personagem/erro/efeito-erro-explosao.png" alt="">
+      <div class="character">
+        <img class="part legs" src="./assets/personagem/base/pernas-jeans.png" alt="">
+        <img class="part shoes" src="./assets/personagem/base/tenis.png" alt="">
+        <img class="part body" src="./assets/personagem/base/tronco-camisa.png" alt="">
+        <img class="part arm-right" src="./assets/personagem/base/braco-bolso.png" alt="" data-arm="right">
+        <img class="part arm-left" src="./assets/personagem/base/braco-acenando.png" alt="" data-arm="left">
+        <img class="part head" src="./assets/personagem/base/cabeca-base.png" alt="">
+      </div>
+    </div>
+
+    <div class="phase-title-block">
+      <div class="phase-eyebrow">Projeto de Produto</div>
+      <h2 class="phase-title">Lance um novo sabor</h2>
+    </div>
+
+    <div class="stage-progress" id="stage-progress"></div>
+
+    <div id="question-container"></div>
+  </section>
+
+  <!-- ============================================================
+       TELA: FASE 05 - LOCALIZAÇÃO
+  ============================================================ -->
+  <section class="screen" id="screen-p5">
+    <div class="phase-header">
+      <button class="btn btn-ghost btn-sm" onclick="goMenu()">← menu</button>
+      <span class="phase-badge">Fase 05 / 05</span>
+    </div>
+
+    <div class="character-stage char-tiny state-idle" id="char-p5" style="align-self:center">
+      <div class="character-shadow"></div>
+      <img class="effect ok-check" src="./assets/personagem/ok/selo-check-verde.png" alt="">
+      <img class="effect ok-stars" src="./assets/personagem/ok/explosao-estrelas.png" alt="">
+      <img class="effect error-x" src="./assets/personagem/erro/icone-x-vermelho.png" alt="">
+      <img class="effect error-burst" src="./assets/personagem/erro/efeito-erro-explosao.png" alt="">
+      <div class="character">
+        <img class="part legs" src="./assets/personagem/base/pernas-jeans.png" alt="">
+        <img class="part shoes" src="./assets/personagem/base/tenis.png" alt="">
+        <img class="part body" src="./assets/personagem/base/tronco-camisa.png" alt="">
+        <img class="part arm-right" src="./assets/personagem/base/braco-bolso.png" alt="" data-arm="right">
+        <img class="part arm-left" src="./assets/personagem/base/braco-acenando.png" alt="" data-arm="left">
+        <img class="part head" src="./assets/personagem/base/cabeca-base.png" alt="">
+      </div>
+    </div>
+
+    <div class="phase-title-block">
+      <div class="phase-eyebrow">Localização</div>
+      <h2 class="phase-title">Onde fica o novo galpão?</h2>
+      <p class="phase-brief">Ajuste o peso de cada critério (1 a 5) conforme a estratégia. As pontuações são recalculadas. Toque em uma localização para confirmar.</p>
+    </div>
+
+    <div class="section-label">Critérios / pesos</div>
+    <div class="criteria-list" id="criteria-list"></div>
+
+    <div class="section-label mt-8">Localizações</div>
+    <div id="location-list" style="display:flex;flex-direction:column;gap:10px"></div>
+  </section>
+
+  <!-- ============================================================
+       TELA: RELATÓRIO FINAL
+  ============================================================ -->
+  <section class="screen" id="screen-final">
+
+    <div class="brand-mark">
+      <span class="diamond"></span>
+      <span class="brand-line">Relatório do Consultor</span>
+      <span class="diamond"></span>
+    </div>
+
+    <h2 class="title-main" style="font-size:34px;text-align:center;margin-top:4px">
+      <em>Parabéns,</em><br>gestor!
+    </h2>
+
+    <!-- Will com taça -->
+    <div class="character-stage char-big state-parabens" id="char-final" style="align-self:center">
+      <div class="character-shadow"></div>
+      <img class="effect confetti-1" src="./assets/personagem/parabens/confete-1.png" alt="">
+      <img class="effect confetti-2" src="./assets/personagem/parabens/confete-2.png" alt="">
+      <img class="effect gold-shine" src="./assets/personagem/parabens/brilho-dourado.png" alt="">
+      <div class="character">
+        <img class="part legs" src="./assets/personagem/base/pernas-jeans.png" alt="">
+        <img class="part shoes" src="./assets/personagem/base/tenis.png" alt="">
+        <img class="part body" src="./assets/personagem/base/tronco-camisa.png" alt="">
+        <img class="part arm-right" src="./assets/personagem/parabens/braco-vitoria.png" alt="" data-arm="right">
+        <img class="part arm-left" src="./assets/personagem/parabens/braco-segurando-taca.png" alt="" data-arm="left">
+        <img class="part head" src="./assets/personagem/base/cabeca-base.png" alt="">
+      </div>
+    </div>
+
+    <div class="report-score-block">
+      <div class="score-eyebrow">Pontuação Total</div>
+      <div>
+        <span class="score-big" id="final-score">0</span><span class="score-of">/ 500</span>
+      </div>
+      <div class="score-grade" id="final-grade">—</div>
+      <div style="font-family:'Fraunces',serif;font-style:italic;font-size:13px;opacity:0.85;margin-top:4px" id="final-pct">0% de aproveitamento</div>
+    </div>
+
+    <div class="section-label">Desempenho por fase</div>
+    <div id="report-phases" style="display:flex;flex-direction:column;gap:6px"></div>
+
+    <div class="section-label mt-8">Conceitos aplicados</div>
+    <div class="card">
+      <div id="concepts-list"></div>
+    </div>
+
+    <div class="card card-wood">
+      <div style="font-family:'Inter',monospace;font-size:10px;letter-spacing:0.2em;opacity:0.7;font-weight:700">DIAGNÓSTICO</div>
+      <p id="diagnostic-text" style="font-size:13px;line-height:1.5;margin-top:8px"></p>
+    </div>
+
+    <div class="row">
+      <button class="btn btn-ghost" onclick="goMenu()">← Menu</button>
+      <button class="btn btn-red" onclick="resetAll()">Nova rodada</button>
+    </div>
+
+    <div class="brand-footer">
+      <div class="brand-footer-text">CRÏA ◇ Fazendinha do Will ◇ Adm Produção 2026</div>
+    </div>
+
+  </section>
+
+</div>
+
+<!-- ============================================================
+     OVERLAY DE FEEDBACK (Will reagindo)
+============================================================ -->
+<div class="feedback-overlay" id="feedback-overlay">
+  <div class="character-stage state-idle" id="char-feedback">
+    <div class="character-shadow"></div>
+    <img class="effect ok-check" src="./assets/personagem/ok/selo-check-verde.png" alt="">
+    <img class="effect ok-stars" src="./assets/personagem/ok/explosao-estrelas.png" alt="">
+    <img class="effect error-x" src="./assets/personagem/erro/icone-x-vermelho.png" alt="">
+    <img class="effect error-burst" src="./assets/personagem/erro/efeito-erro-explosao.png" alt="">
+    <div class="character">
+      <img class="part legs" src="./assets/personagem/base/pernas-jeans.png" alt="">
+      <img class="part shoes" src="./assets/personagem/base/tenis.png" alt="">
+      <img class="part body" src="./assets/personagem/base/tronco-camisa.png" alt="">
+      <img class="part arm-right" src="./assets/personagem/base/braco-bolso.png" alt="" data-arm="right">
+      <img class="part arm-left" src="./assets/personagem/base/braco-acenando.png" alt="" data-arm="left">
+      <img class="part head" src="./assets/personagem/base/cabeca-base.png" alt="">
+    </div>
+  </div>
+  <div class="feedback-msg" id="feedback-msg">Boa!</div>
+</div>
+
+<script>
+// ============================================================
+// CAMINHOS DOS BRAÇOS POR ESTADO
+// ============================================================
+const ARM_PATHS = {
+  idle: {
+    left: './assets/personagem/base/braco-acenando.png',
+    right: './assets/personagem/base/braco-bolso.png'
+  },
+  ok: {
+    left: './assets/personagem/ok/braco-ok.png',
+    right: './assets/personagem/base/braco-bolso.png'
+  },
+  erro: {
+    left: './assets/personagem/erro/braco-deslike.png',
+    right: './assets/personagem/base/braco-bolso.png'
+  },
+  parabens: {
+    left: './assets/personagem/parabens/braco-segurando-taca.png',
+    right: './assets/personagem/parabens/braco-vitoria.png'
+  }
+};
+
+function setCharState(stage, state) {
+  if (!stage) return;
+  stage.classList.remove('state-idle', 'state-ok', 'state-erro', 'state-parabens');
+  stage.classList.add(`state-${state}`);
+  const left = stage.querySelector('[data-arm="left"]');
+  const right = stage.querySelector('[data-arm="right"]');
+  if (left) left.src = ARM_PATHS[state].left;
+  if (right) right.src = ARM_PATHS[state].right;
+}
+
+// ============================================================
+// ESTADO GLOBAL
+// ============================================================
+const State = {
+  scores: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0 },
+  done: { p1: false, p2: false, p3: false, p4: false, p5: false },
+  concepts: new Set(),
+  total() { return Object.values(this.scores).reduce((a, b) => a + b, 0); },
+  completed() { return Object.values(this.done).filter(Boolean).length; }
+};
+
+// ============================================================
+// NAVEGAÇÃO ENTRE TELAS
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${id}`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goMenu() {
+  renderMenu();
+  showScreen('menu');
+}
+
+// ============================================================
+// FEEDBACK MODAL (Will reagindo)
+// ============================================================
+function flashFeedback(type, message, duration = 1800) {
+  const overlay = document.getElementById('feedback-overlay');
+  const char = document.getElementById('char-feedback');
+  const msg = document.getElementById('feedback-msg');
+  setCharState(char, type);
+  msg.textContent = message;
+  msg.className = `feedback-msg ${type}`;
+  overlay.classList.add('active');
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    setCharState(char, 'idle');
+  }, duration);
+}
+
+// Reação inline do Will dentro da fase (sem overlay)
+function reactInline(stageEl, type, durationMs = 1500) {
+  if (!stageEl) return;
+  setCharState(stageEl, type);
+  clearTimeout(stageEl._reactTimeout);
+  stageEl._reactTimeout = setTimeout(() => {
+    setCharState(stageEl, 'idle');
+  }, durationMs);
+}
+
+// ============================================================
+// MENU - LISTA DE FASES
+// ============================================================
+const PHASES = [
+  { id: 'p1', n: '01', title: 'Arranjo Físico', sub: 'Reorganize o fluxo', icon: '🏭' },
+  { id: 'p2', n: '02', title: 'Capacidade', sub: 'Atenda o pico', icon: '📈' },
+  { id: 'p3', n: '03', title: 'Tipos de Processo', sub: 'Volume × variedade', icon: '🫙' },
+  { id: 'p4', n: '04', title: 'Novo Produto', sub: 'Lance um sabor', icon: '🍓' },
+  { id: 'p5', n: '05', title: 'Localização', sub: 'Onde fica o galpão', icon: '🌾' }
+];
+
+function renderMenu() {
+  const list = document.getElementById('phase-list');
+  list.innerHTML = '';
+  PHASES.forEach(p => {
+    const done = State.done[p.id];
+    const item = document.createElement('div');
+    item.className = 'phase-item' + (done ? ' done' : '');
+    item.innerHTML = `
+      <div class="phase-num">${p.n}</div>
+      <div style="font-size:20px">${p.icon}</div>
+      <div class="phase-info">
+        <div class="phase-info-title">${p.title}</div>
+        <div class="phase-info-sub">${p.sub}${done ? ` · ${State.scores[p.id]} pts` : ''}</div>
+      </div>
+      <div class="phase-arrow">${done ? '✓' : '→'}</div>
+    `;
+    item.addEventListener('click', () => startPhase(p.id));
+    list.appendChild(item);
+  });
+
+  const completed = State.completed();
+  document.getElementById('progress-fill').style.width = `${(completed / 5) * 100}%`;
+  document.getElementById('progress-text').textContent = `${completed}/5`;
+
+  const btnFinal = document.getElementById('btn-final');
+  btnFinal.style.display = completed === 5 ? '' : 'none';
+}
+
+function startPhase(id) {
+  if (id === 'p1') initP1();
+  if (id === 'p2') initP2();
+  if (id === 'p3') initP3();
+  if (id === 'p4') initP4();
+  if (id === 'p5') initP5();
+  showScreen(id);
+}
+
+document.getElementById('btn-reset').addEventListener('click', resetAll);
+document.getElementById('btn-final').addEventListener('click', () => { renderFinal(); showScreen('final'); });
+
+function resetAll() {
+  State.scores = { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0 };
+  State.done = { p1: false, p2: false, p3: false, p4: false, p5: false };
+  State.concepts = new Set();
+  goMenu();
+}
+
+// ============================================================
+// FASE 01 - ARRANJO FÍSICO (sortable list)
+// ============================================================
+const P1_CORRECT = ['LAV', 'COR', 'COZ', 'ENV', 'ROT'];
+const P1_STATIONS = {
+  LAV: { name: 'Lavagem', emoji: '🚿' },
+  COR: { name: 'Corte', emoji: '🔪' },
+  COZ: { name: 'Cozimento', emoji: '🔥' },
+  ENV: { name: 'Envase', emoji: '🫙' },
+  ROT: { name: 'Rotulagem', emoji: '🏷️' }
+};
+let p1State = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  // Garante embaralhamento real
+  if (a.join(',') === P1_CORRECT.join(',')) return shuffle(arr);
+  return a;
+}
+
+function initP1() {
+  p1State = shuffle(P1_CORRECT);
+  renderP1();
+}
+
+function renderP1() {
+  const container = document.getElementById('flow-chart');
+  container.innerHTML = '';
+  p1State.forEach((key, i) => {
+    const s = P1_STATIONS[key];
+    const isCorrect = key === P1_CORRECT[i];
+    const card = document.createElement('div');
+    card.className = 'station-card' + (isCorrect ? ' ok' : '');
+    card.innerHTML = `
+      <div class="station-pos">${i + 1}</div>
+      <div class="station-emoji">${s.emoji}</div>
+      <div class="station-info">
+        <div class="station-name">${s.name}</div>
+      </div>
+      <div class="station-controls">
+        <button data-action="up" data-i="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
+        <button data-action="down" data-i="${i}" ${i === p1State.length - 1 ? 'disabled' : ''}>↓</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  container.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const i = parseInt(btn.dataset.i);
+      const action = btn.dataset.action;
+      if (action === 'up' && i > 0) {
+        [p1State[i - 1], p1State[i]] = [p1State[i], p1State[i - 1]];
+      } else if (action === 'down' && i < p1State.length - 1) {
+        [p1State[i + 1], p1State[i]] = [p1State[i], p1State[i + 1]];
+      }
+      renderP1();
+      updateP1Metrics();
+    });
+  });
+
+  updateP1Metrics();
+}
+
+function updateP1Metrics() {
+  let dist = 0;
+  p1State.forEach((key, i) => {
+    const correctI = P1_CORRECT.indexOf(key);
+    dist += Math.abs(correctI - i);
+  });
+
+  const distEl = document.getElementById('flow-distance');
+  const layoutEl = document.getElementById('flow-layout');
+  distEl.textContent = `${dist} un`;
+
+  if (dist === 0) {
+    distEl.className = 'metric-value green';
+    layoutEl.textContent = 'Por produto ✓';
+    layoutEl.style.color = 'var(--gold-light)';
+  } else if (dist <= 4) {
+    distEl.className = 'metric-value';
+    layoutEl.textContent = 'Tendência por produto';
+    layoutEl.style.color = 'var(--cream)';
+  } else if (dist <= 8) {
+    distEl.className = 'metric-value';
+    layoutEl.textContent = 'Celular / misto';
+    layoutEl.style.color = 'var(--cream)';
+  } else {
+    distEl.className = 'metric-value red';
+    layoutEl.textContent = 'Funcional / desorganizado';
+    layoutEl.style.color = 'var(--red-soft)';
+  }
+  p1State._dist = dist;
+}
+
+document.getElementById('btn-p1-finish').addEventListener('click', () => {
+  const dist = p1State._dist || 0;
+  if (dist > 2) {
+    flashFeedback('erro', 'Reorganize melhor o fluxo!', 1500);
+    reactInline(document.getElementById('char-p1'), 'erro', 1500);
+    return;
+  }
+  const score = dist === 0 ? 100 : (dist === 1 ? 80 : 60);
+  State.scores.p1 = score;
+  State.done.p1 = true;
+  State.concepts.add('Arranjo físico por produto');
+  State.concepts.add('Tipos de arranjo: posicional, funcional, celular, por produto');
+  State.concepts.add('Fluxo de produção e movimentação');
+  flashFeedback('ok', `Boa! ${score} pontos`, 1800);
+  setTimeout(() => goMenu(), 1900);
+});
+
+// ============================================================
+// FASE 02 - CAPACIDADE
+// ============================================================
+const P2_DEMAND = [80, 70, 75, 85, 95, 140, 160, 110, 90, 100, 130, 180];
+const P2_MONTHS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+const P2_POLICIES = [
+  { id: 'const', name: 'Capacidade constante', desc: 'Mesma capacidade todo mês. Sobra na baixa, falta no pico.' },
+  { id: 'chase', name: 'Acompanha demanda', desc: 'Ajusta capacidade mês a mês. Sem estoque, alta variação de M.O.' },
+  { id: 'mixed', name: 'Política mista', desc: 'Base estável + reforço sazonal. Equilibra custo e atendimento.' }
+];
+let p2Selected = null;
+
+function initP2() {
+  p2Selected = null;
+  document.getElementById('cost-grid').style.display = 'none';
+  renderP2Chart();
+  renderP2Policies();
+}
+
+function renderP2Chart(capacity = null) {
+  const svg = document.getElementById('chart-svg');
+  svg.innerHTML = '';
+  const W = 360, H = 140, padX = 14, padY = 10;
+  const maxD = 200;
+  const barW = (W - padX * 2) / 12;
+
+  P2_DEMAND.forEach((d, i) => {
+    const bx = padX + i * barW + 2;
+    const bh = (d / maxD) * (H - padY - 24);
+    const by = H - 24 - bh;
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', bx);
+    rect.setAttribute('y', by);
+    rect.setAttribute('width', barW - 4);
+    rect.setAttribute('height', bh);
+    rect.setAttribute('fill', '#8b6b4a');
+    rect.setAttribute('rx', 2);
+    svg.appendChild(rect);
+
+    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t.setAttribute('x', bx + (barW - 4) / 2);
+    t.setAttribute('y', H - 8);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-size', '9');
+    t.setAttribute('font-family', 'Inter, monospace');
+    t.setAttribute('fill', '#6b4f38');
+    t.textContent = P2_MONTHS[i];
+    svg.appendChild(t);
+  });
+
+  if (capacity) {
+    let path = '';
+    capacity.forEach((c, i) => {
+      const cx = padX + i * barW + barW / 2;
+      const cy = H - 24 - (c / maxD) * (H - padY - 24);
+      path += (i === 0 ? 'M' : 'L') + cx + ',' + cy + ' ';
+    });
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    line.setAttribute('d', path);
+    line.setAttribute('stroke', '#c1272d');
+    line.setAttribute('stroke-width', '2.5');
+    line.setAttribute('fill', 'none');
+    line.setAttribute('stroke-linecap', 'round');
+    line.setAttribute('stroke-linejoin', 'round');
+    svg.appendChild(line);
+
+    capacity.forEach((c, i) => {
+      const cx = padX + i * barW + barW / 2;
+      const cy = H - 24 - (c / maxD) * (H - padY - 24);
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', cx);
+      dot.setAttribute('cy', cy);
+      dot.setAttribute('r', '3');
+      dot.setAttribute('fill', '#c1272d');
+      svg.appendChild(dot);
+    });
+  }
+}
+
+function renderP2Policies() {
+  const container = document.getElementById('policy-list');
+  container.innerHTML = '';
+  P2_POLICIES.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'policy-card' + (p2Selected === p.id ? ' selected' : '');
+    card.innerHTML = `
+      <div class="policy-name">${p.name}</div>
+      <div class="policy-desc">${p.desc}</div>
+    `;
+    card.addEventListener('click', () => selectP2Policy(p.id));
+    container.appendChild(card);
+  });
+}
+
+function selectP2Policy(id) {
+  p2Selected = id;
+  renderP2Policies();
+
+  let cap;
+  if (id === 'const') cap = P2_DEMAND.map(() => 115);
+  else if (id === 'chase') cap = [...P2_DEMAND];
+  else cap = P2_DEMAND.map(d => d > 120 ? d : Math.max(100, d * 0.95));
+
+  let stock = 0, idle = 0, loss = 0, mo = 0;
+  P2_DEMAND.forEach((d, i) => {
+    const diff = cap[i] - d;
+    if (diff > 0) {
+      stock += diff * 6;
+      idle += diff * 2;
+    } else {
+      loss += Math.abs(diff) * 12;
+    }
+  });
+
+  if (id === 'chase') {
+    let variation = 0;
+    for (let i = 1; i < cap.length; i++) variation += Math.abs(cap[i] - cap[i - 1]);
+    mo = variation * 4;
+  } else if (id === 'mixed') {
+    mo = 200;
+  } else {
+    mo = 100;
+  }
+
+  const total = stock + idle + loss + mo;
+
+  document.getElementById('cost-grid').style.display = '';
+  document.getElementById('cost-stock').textContent = `R$ ${stock}`;
+  document.getElementById('cost-idle').textContent = `R$ ${idle}`;
+  document.getElementById('cost-loss').textContent = `R$ ${loss}`;
+  document.getElementById('cost-mo').textContent = `R$ ${mo}`;
+  document.getElementById('cost-total').textContent = `R$ ${total}`;
+
+  renderP2Chart(cap);
+}
+
+document.getElementById('btn-p2-finish').addEventListener('click', () => {
+  if (!p2Selected) {
+    flashFeedback('erro', 'Escolha uma política primeiro!', 1300);
+    return;
+  }
+  let score;
+  if (p2Selected === 'mixed') score = 100;
+  else if (p2Selected === 'chase') score = 70;
+  else score = 55;
+  State.scores.p2 = score;
+  State.done.p2 = true;
+  State.concepts.add('Planejamento e controle de capacidade');
+  State.concepts.add('Políticas de capacidade: constante, acompanha, mista');
+  State.concepts.add('Sazonalidade e gargalo');
+  State.concepts.add('S&OP, MPS, MRP');
+
+  const msg = p2Selected === 'mixed' ? 'Decisão ótima!' : (p2Selected === 'chase' ? 'Boa escolha' : 'Pode melhorar');
+  flashFeedback(score >= 90 ? 'ok' : (score >= 65 ? 'ok' : 'erro'), `${msg} · ${score} pts`, 1800);
+  setTimeout(() => goMenu(), 1900);
+});
+
+// ============================================================
+// FASE 03 - TIPOS DE PROCESSO
+// ============================================================
+const P3_PRODUCTS = [
+  { id: 1, name: 'Doce sob encomenda (festa exclusiva)', emoji: '🎂', correct: 'jobbing' },
+  { id: 2, name: 'Compota tradicional (linha regular)', emoji: '🫙', correct: 'lotes' },
+  { id: 3, name: 'Geleia popular (supermercados)', emoji: '🍓', correct: 'massa' },
+  { id: 4, name: 'Doce artesanal único (peça)', emoji: '🏆', correct: 'projeto' },
+  { id: 5, name: 'Calda industrial (grande escala)', emoji: '🏭', correct: 'continuo' }
+];
+const P3_TYPES = [
+  { id: 'projeto', name: 'Projeto', sub: 'Vol baixíssimo, var alta' },
+  { id: 'jobbing', name: 'Jobbing', sub: 'Sob encomenda' },
+  { id: 'lotes', name: 'Lotes', sub: 'Bateladas' },
+  { id: 'massa', name: 'Massa', sub: 'Alto vol, baixa var' },
+  { id: 'continuo', name: 'Contínuo', sub: 'Volume altíssimo' }
+];
+let p3Selected = null;
+let p3Matches = {};
+
+function initP3() {
+  p3Selected = null;
+  p3Matches = {};
+  renderP3();
+}
+
+function renderP3() {
+  const prodList = document.getElementById('product-list');
+  prodList.innerHTML = '';
+  P3_PRODUCTS.forEach(p => {
+    const matched = p3Matches[p.id];
+    let cls = 'product-item';
+    if (matched) {
+      cls += matched === p.correct ? ' matched-correct' : ' matched-wrong';
+    } else if (p3Selected === p.id) {
+      cls += ' selected';
+    }
+    const matchInfo = matched ? `→ ${P3_TYPES.find(t => t.id === matched).name}` : 'toque para selecionar';
+    const item = document.createElement('button');
+    item.className = cls;
+    item.innerHTML = `
+      <div class="product-emoji">${p.emoji}</div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-match">${matchInfo}</div>
+      </div>
+    `;
+    item.addEventListener('click', () => {
+      p3Selected = p3Selected === p.id ? null : p.id;
+      renderP3();
+    });
+    prodList.appendChild(item);
+  });
+
+  const typesGrid = document.getElementById('types-grid');
+  typesGrid.innerHTML = '';
+  P3_TYPES.forEach(t => {
+    const chip = document.createElement('button');
+    chip.className = 'type-chip' + (!p3Selected ? ' disabled' : '');
+    chip.innerHTML = `
+      <div class="type-chip-name">${t.name}</div>
+      <div class="type-chip-sub">${t.sub}</div>
+    `;
+    chip.addEventListener('click', () => {
+      if (!p3Selected) return;
+      p3Matches[p3Selected] = t.id;
+      p3Selected = null;
+      renderP3();
+    });
+    typesGrid.appendChild(chip);
+  });
+
+  const placed = Object.keys(p3Matches).length;
+  const correct = P3_PRODUCTS.filter(p => p3Matches[p.id] === p.correct).length;
+  document.getElementById('p3-placed').textContent = `${placed} / 5`;
+  document.getElementById('p3-correct').textContent = `${correct} / 5`;
+  document.getElementById('p3-correct').className = 'metric-value' + (correct === 5 ? ' green' : '');
+}
+
+document.getElementById('btn-p3-finish').addEventListener('click', () => {
+  const placed = Object.keys(p3Matches).length;
+  if (placed < 5) {
+    flashFeedback('erro', 'Combine os 5 produtos antes!', 1500);
+    return;
+  }
+  const correct = P3_PRODUCTS.filter(p => p3Matches[p.id] === p.correct).length;
+  State.scores.p3 = correct * 20;
+  State.done.p3 = true;
+  State.concepts.add('Matriz volume-variedade');
+  State.concepts.add('Tipos de processo: projeto, jobbing, lotes, massa, contínuo');
+  State.concepts.add('Serviços profissionais / loja / massa');
+
+  const msg = correct === 5 ? 'Perfeito!' : (correct >= 3 ? 'Boa!' : 'Revisa os conceitos');
+  flashFeedback(correct >= 4 ? 'ok' : 'erro', `${msg} · ${correct * 20} pts`, 1800);
+  setTimeout(() => goMenu(), 1900);
+});
+
+// ============================================================
+// FASE 04 - PROJETO DE PRODUTO
+// ============================================================
+const P4_STAGES = [
+  {
+    eyebrow: 'Etapa 1 / Geração do conceito',
+    q: 'De onde vêm as ideias para o novo sabor?',
+    opts: [
+      { t: 'Apenas do dono, por intuição', c: false },
+      { t: 'Consumidores, concorrentes, funcionários e P&D', c: true },
+      { t: 'Copiar exatamente o produto mais vendido', c: false },
+      { t: 'Decisão aleatória entre as frutas disponíveis', c: false }
+    ],
+    explain: 'Fontes válidas: ideias dos consumidores (marketing, pesquisa), engenharia reversa dos concorrentes, ideias dos funcionários e P&D.'
+  },
+  {
+    eyebrow: 'Etapa 2 / Triagem do conceito',
+    q: 'Quais critérios usar para filtrar os conceitos?',
+    opts: [
+      { t: 'Só o mais barato de produzir', c: false },
+      { t: 'Viabilidade, aceitabilidade e vulnerabilidade', c: true },
+      { t: 'O que o concorrente lançou primeiro', c: false },
+      { t: 'Apenas opinião do diretor comercial', c: false }
+    ],
+    explain: 'Triagem do conceito avalia viabilidade (capacidade, habilidade, recursos), aceitabilidade (satisfação, retorno) e vulnerabilidade (riscos).'
+  },
+  {
+    eyebrow: 'Etapa 3 / Projeto preliminar',
+    q: 'Como reduzir custos antes mesmo de produzir?',
+    opts: [
+      { t: 'QFD - Desdobramento da Função Qualidade', c: false },
+      { t: 'Engenharia de Valor: reduzir e prevenir custos desnecessários', c: true },
+      { t: 'Lançar e depois ver o que cortar', c: false },
+      { t: 'Diminuir a equipe de produção', c: false }
+    ],
+    explain: 'Engenharia de Valor reduz custos e previne custos desnecessários antes do lançamento. O QFD assegura que requisitos do cliente sejam cumpridos.'
+  },
+  {
+    eyebrow: 'Etapa 4 / Avaliação e melhoria',
+    q: 'Como testar a robustez do produto?',
+    opts: [
+      { t: 'Testar só em condições ideais', c: false },
+      { t: 'Método de Taguchi: robustez em condições adversas', c: true },
+      { t: 'Perguntar para 3 amigos', c: false },
+      { t: 'Pular o teste para acelerar', c: false }
+    ],
+    explain: 'Métodos de Taguchi testam a robustez do projeto: o produto deve manter desempenho mesmo em condições adversas externas.'
+  },
+  {
+    eyebrow: 'Etapa 5 / Protótipo e projeto final',
+    q: 'Como validar antes do lançamento em massa?',
+    opts: [
+      { t: 'Lançar direto em escala industrial', c: false },
+      { t: 'Lote piloto + consolidação do projeto final', c: true },
+      { t: 'Esperar feedback após o lançamento', c: false },
+      { t: 'Confiar nos testes internos da equipe', c: false }
+    ],
+    explain: 'Protótipo e projeto final: execução de um lote piloto, consolidando funcionalidades e benefícios. Reduz o time-to-market com segurança.'
+  }
+];
+let p4Current = 0;
+let p4Correct = 0;
+let p4Answered = false;
+
+function initP4() {
+  p4Current = 0;
+  p4Correct = 0;
+  p4Answered = false;
+  renderP4();
+}
+
+function renderP4() {
+  const progress = document.getElementById('stage-progress');
+  progress.innerHTML = '';
+  for (let i = 0; i < P4_STAGES.length; i++) {
+    const d = document.createElement('div');
+    d.className = 'stage-dot' + (i < p4Current ? ' done' : (i === p4Current ? ' current' : ''));
+    progress.appendChild(d);
+  }
+
+  const stage = P4_STAGES[p4Current];
+  const container = document.getElementById('question-container');
+  container.innerHTML = `
+    <div class="question-block">
+      <div class="question-stage">${stage.eyebrow}</div>
+      <div class="question-text">${stage.q}</div>
+      <div class="option-list" id="opt-list"></div>
+    </div>
+  `;
+
+  const optList = document.getElementById('opt-list');
+  stage.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-item';
+    btn.innerHTML = `
+      <div class="option-letter">${String.fromCharCode(65 + i)}</div>
+      <div class="option-text">${opt.t}</div>
+    `;
+    btn.addEventListener('click', () => answerP4(opt, btn, stage));
+    optList.appendChild(btn);
+  });
+
+  p4Answered = false;
+}
+
+function answerP4(opt, btn, stage) {
+  if (p4Answered) return;
+  p4Answered = true;
+
+  document.querySelectorAll('#opt-list .option-item').forEach(b => b.classList.add('disabled'));
+  btn.classList.remove('disabled');
+  btn.classList.add(opt.c ? 'correct' : 'wrong');
+
+  if (opt.c) {
+    p4Correct++;
+    reactInline(document.getElementById('char-p4'), 'ok', 1500);
+  } else {
+    reactInline(document.getElementById('char-p4'), 'erro', 1500);
+  }
+
+  const container = document.getElementById('question-container');
+  const exp = document.createElement('div');
+  exp.className = 'explain-box';
+  exp.textContent = stage.explain;
+  container.appendChild(exp);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'btn btn-red btn-block mt-12';
+  nextBtn.textContent = p4Current === P4_STAGES.length - 1 ? 'Concluir fase ✓' : 'Próxima etapa →';
+  nextBtn.addEventListener('click', () => {
+    p4Current++;
+    if (p4Current >= P4_STAGES.length) {
+      finishP4();
+    } else {
+      renderP4();
+    }
+  });
+  container.appendChild(nextBtn);
+}
+
+function finishP4() {
+  State.scores.p4 = p4Correct * 20;
+  State.done.p4 = true;
+  State.concepts.add('Estágios do projeto: geração, triagem, preliminar, avaliação, final');
+  State.concepts.add('QFD - Desdobramento da Função Qualidade');
+  State.concepts.add('Engenharia de Valor');
+  State.concepts.add('Métodos de Taguchi');
+  State.concepts.add('Time-to-market e lote piloto');
+
+  const msg = p4Correct === 5 ? 'Mandou bem!' : (p4Correct >= 3 ? 'Boa!' : 'Revisa os estágios');
+  flashFeedback(p4Correct >= 4 ? 'ok' : 'erro', `${msg} · ${p4Correct * 20} pts`, 1800);
+  setTimeout(() => goMenu(), 1900);
+}
+
+// ============================================================
+// FASE 05 - LOCALIZAÇÃO
+// ============================================================
+const P5_CRITERIA = [
+  { id: 'transp', name: 'Custo de transporte', w: 3 },
+  { id: 'forn', name: 'Proximidade fornecedores', w: 3 },
+  { id: 'cli', name: 'Proximidade clientes', w: 3 },
+  { id: 'infra', name: 'Infraestrutura', w: 3 },
+  { id: 'mo', name: 'Mão de obra qualificada', w: 3 }
+];
+const P5_LOCATIONS = [
+  {
+    id: 'A', name: 'Centro urbano',
+    desc: 'Perto dos clientes, aluguel alto, sem espaço.',
+    scores: { transp: 2, forn: 3, cli: 5, infra: 4, mo: 4 }
+  },
+  {
+    id: 'B', name: 'Distrito industrial',
+    desc: 'Infraestrutura completa, M.O. técnica, longe dos clientes.',
+    scores: { transp: 4, forn: 4, cli: 2, infra: 5, mo: 5 }
+  },
+  {
+    id: 'C', name: 'Próximo aos produtores',
+    desc: 'Matéria-prima fresca, infraestrutura limitada.',
+    scores: { transp: 5, forn: 5, cli: 2, infra: 2, mo: 3 }
+  }
+];
+
+function initP5() {
+  P5_CRITERIA.forEach(c => c.w = 3);
+  renderP5();
+}
+
+function renderP5() {
+  const critList = document.getElementById('criteria-list');
+  critList.innerHTML = '';
+  P5_CRITERIA.forEach(cr => {
+    const row = document.createElement('div');
+    row.className = 'criteria-row';
+    let pillsHtml = '';
+    for (let w = 1; w <= 5; w++) {
+      pillsHtml += `<div class="weight-pill ${w === cr.w ? 'active' : ''}" data-c="${cr.id}" data-w="${w}">${w}</div>`;
+    }
+    row.innerHTML = `
+      <div class="criteria-top">
+        <div class="criteria-name">${cr.name}</div>
+        <div class="criteria-weight">${cr.w}</div>
+      </div>
+      <div class="criteria-pills">${pillsHtml}</div>
+    `;
+    critList.appendChild(row);
+  });
+
+  critList.querySelectorAll('.weight-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const cId = pill.dataset.c;
+      const w = parseInt(pill.dataset.w);
+      P5_CRITERIA.find(c => c.id === cId).w = w;
+      renderP5();
+    });
+  });
+
+  const scored = P5_LOCATIONS.map(loc => {
+    let total = 0;
+    P5_CRITERIA.forEach(cr => { total += cr.w * loc.scores[cr.id]; });
+    return { ...loc, total };
+  });
+  const maxScore = Math.max(...scored.map(s => s.total));
+
+  const locList = document.getElementById('location-list');
+  locList.innerHTML = '';
+  scored.forEach(loc => {
+    const isBest = loc.total === maxScore;
+    const card = document.createElement('div');
+    card.className = 'location-card' + (isBest ? ' best' : '');
+    card.innerHTML = `
+      <div class="location-top">
+        <div style="flex:1">
+          <div class="location-name">${loc.id} · ${loc.name}</div>
+          <div class="location-desc">${loc.desc}</div>
+          ${isBest ? '<div class="location-badge">★ melhor escolha</div>' : ''}
+        </div>
+        <div class="location-score">${loc.total}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => confirmP5(loc, maxScore));
+    locList.appendChild(card);
+  });
+}
+
+function confirmP5(loc, maxScore) {
+  const score = loc.total === maxScore ? 100 : Math.round((loc.total / maxScore) * 80);
+  State.scores.p5 = score;
+  State.done.p5 = true;
+  State.concepts.add('Planejamento de localização');
+  State.concepts.add('Critérios: transporte, fornecedores, clientes, infra, M.O.');
+  State.concepts.add('Mapeamento de fontes de suprimentos');
+
+  const msg = loc.total === maxScore ? 'Decisão alinhada!' : 'Outra opção pontuava mais';
+  flashFeedback(loc.total === maxScore ? 'ok' : 'erro', `${msg} · ${score} pts`, 1800);
+  setTimeout(() => goMenu(), 1900);
+}
+
+// ============================================================
+// RELATÓRIO FINAL
+// ============================================================
+function renderFinal() {
+  const total = State.total();
+  const pct = Math.round((total / 500) * 100);
+  let grade = 'D';
+  if (pct >= 90) grade = 'A';
+  else if (pct >= 75) grade = 'B';
+  else if (pct >= 60) grade = 'C';
+
+  document.getElementById('final-score').textContent = total;
+  document.getElementById('final-grade').textContent = grade;
+  document.getElementById('final-pct').textContent = `${pct}% de aproveitamento`;
+
+  const phasesEl = document.getElementById('report-phases');
+  phasesEl.innerHTML = '';
+  PHASES.forEach(p => {
+    const score = State.scores[p.id];
+    const cls = score >= 90 ? 'good' : (score >= 60 ? 'ok' : '');
+    const row = document.createElement('div');
+    row.className = 'report-phase-row';
+    row.innerHTML = `
+      <div class="report-phase-num">${p.n}</div>
+      <div class="report-phase-name">${p.title}</div>
+      <div class="report-phase-bar"><div class="report-phase-bar-fill ${cls}" style="width:${score}%"></div></div>
+      <div class="report-phase-pts">${score}</div>
+    `;
+    phasesEl.appendChild(row);
+  });
+
+  const conceptsEl = document.getElementById('concepts-list');
+  conceptsEl.innerHTML = '';
+  Array.from(State.concepts).forEach(c => {
+    const tag = document.createElement('span');
+    tag.className = 'concept-tag';
+    tag.textContent = c;
+    conceptsEl.appendChild(tag);
+  });
+
+  let diag;
+  if (pct >= 90) diag = 'A operação foi reestruturada com excelência. Arranjo por produto, capacidade equilibrada, processos classificados, novo produto bem conduzido e localização estratégica. Pronto para escalar.';
+  else if (pct >= 75) diag = 'A operação está estruturada e funcional. Há pontos de melhoria, mas as decisões foram fundamentadas em conceitos sólidos de administração da produção.';
+  else if (pct >= 60) diag = 'A operação foi minimamente organizada, mas várias decisões podem ser revistas. Vale revisar os conceitos das fases com menor pontuação.';
+  else diag = 'A operação ainda apresenta gargalos importantes. Recomenda-se reestudar os fundamentos: arranjo físico, capacidade, tipos de processo e estágios de projeto.';
+
+  document.getElementById('diagnostic-text').textContent = diag;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderMenu();
+</script>
+
+</body>
+</html>
